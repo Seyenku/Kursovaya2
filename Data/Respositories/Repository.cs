@@ -1,105 +1,56 @@
-﻿using System;
+﻿// Repository.cs
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Kursovaya.Data.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        protected readonly ApplicationDbContext Context;
-        protected readonly DbSet<T> DbSet;
+        protected readonly ApplicationDbContext _ctx;
+        protected readonly DbSet<T> _set;
 
-        public Repository(ApplicationDbContext context)
+        public Repository(ApplicationDbContext ctx)
         {
-            Context = context;
-            DbSet = context.Set<T>();
+            _ctx = ctx ?? throw new ArgumentNullException(nameof(ctx));
+            _set = ctx.Set<T>();
         }
 
-        public T GetById(int id)
+        // ------------------- Чтение ----------------------------------------
+        public IQueryable<T> Query() => _set;                 // IQueryable остаётся синхронным
+
+        public Task<T> GetByIdAsync(int id) => _set.FindAsync(id);
+
+        public Task<List<T>> GetAllAsync() => _set.ToListAsync();
+
+        public Task<List<T>> FindAsync(Expression<Func<T, bool>> p)
+            => _set.Where(p).ToListAsync();
+
+        public Task<int> CountAsync(Expression<Func<T, bool>> p = null)
+            => (p == null ? _set.CountAsync() : _set.CountAsync(p));
+
+        public Task<List<T>> GetPagedAsync(int page, int size,
+                                           Expression<Func<T, bool>> p = null)
         {
-            return DbSet.Find(id);
+            if (page < 1) throw new ArgumentOutOfRangeException(nameof(page));
+            if (size < 1) throw new ArgumentOutOfRangeException(nameof(size));
+
+            var q = p == null ? _set : _set.Where(p);
+            return q.Skip((page - 1) * size).Take(size).ToListAsync();
         }
 
-        public T GetById(object id)
-        {
-            return DbSet.Find(id);
-        }
+        // ------------------- Изменение -------------------------------------
+        public void Add(T e) => _set.Add(e);
+        public void AddRange(IEnumerable<T> col) => _set.AddRange(col);
+        public void Update(T e) => _ctx.Entry(e).State = EntityState.Modified;
+        public void Remove(T e) => _set.Remove(e);
+        public void RemoveRange(IEnumerable<T> col) => _set.RemoveRange(col);
 
-        public IEnumerable<T> GetAll()
-        {
-            return DbSet.ToList();
-        }
-
-        public IQueryable<T> Query()
-        {
-            return DbSet.AsQueryable();
-        }
-
-        public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
-        {
-            return DbSet.Where(predicate).ToList();
-        }
-
-        public T FirstOrDefault(Expression<Func<T, bool>> predicate)
-        {
-            return DbSet.FirstOrDefault(predicate);
-        }
-
-        public IEnumerable<T> GetPaged(int page, int pageSize)
-        {
-            return DbSet.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-        }
-
-        public IEnumerable<T> GetPaged(int page, int pageSize, Expression<Func<T, bool>> predicate)
-        {
-            return DbSet.Where(predicate).Skip((page - 1) * pageSize).Take(pageSize).ToList();
-        }
-
-        public int Count()
-        {
-            return DbSet.Count();
-        }
-
-        public int Count(Expression<Func<T, bool>> predicate)
-        {
-            return DbSet.Count(predicate);
-        }
-
-        public bool Any(Expression<Func<T, bool>> predicate)
-        {
-            return DbSet.Any(predicate);
-        }
-
-        public void Add(T entity)
-        {
-            DbSet.Add(entity);
-        }
-
-        public void AddRange(IEnumerable<T> entities)
-        {
-            DbSet.AddRange(entities);
-        }
-
-        public void Update(T entity)
-        {
-            Context.Entry(entity).State = EntityState.Modified;
-        }
-
-        public void Remove(T entity)
-        {
-            DbSet.Remove(entity);
-        }
-
-        public void RemoveRange(IEnumerable<T> entities)
-        {
-            DbSet.RemoveRange(entities);
-        }
-
-        public void SaveChanges()
-        {
-            Context.SaveChanges();
-        }
+        // ------------------- Сохранение ------------------------------------
+        public Task<int> SaveChangesAsync() => _ctx.SaveChangesAsync();
     }
+
 }

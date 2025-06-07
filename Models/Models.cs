@@ -23,6 +23,9 @@ namespace Kursovaya.Models
 
         public string Other { get; set; }
 
+        [NotMapped]
+        public int DeviceCount => Equipment?.Count ?? 0;
+
         [Column("verification_date")]
         public DateTime? VerificationDate { get; set; }
 
@@ -121,11 +124,14 @@ namespace Kursovaya.Models
         [Column("id_manufacturer")]
         public int ManufacturerId { get; set; }
 
-        public bool Managed { get; set; }
+        [Column("managed")]
+        public int Managed { get; set; }
 
-        public bool Console { get; set; }
+        [Column("console")]
+        public int Console { get; set; }
 
-        public bool Poe { get; set; }
+        [Column("poe")]
+        public int Poe { get; set; }
 
         [ForeignKey("TypeId")]
         public virtual EquipmentType Type { get; set; }
@@ -248,6 +254,7 @@ namespace Kursovaya.Models
         public virtual ICollection<PortType> PortTypes { get; set; }
     }
 
+    [Table("tc_switching_manufacturer")]
     public class Owner
     {
         [Key]

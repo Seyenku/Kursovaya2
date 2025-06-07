@@ -151,13 +151,13 @@ namespace Kursovaya.Models
         public int ManufacturerId { get; set; }
 
         [Display(Name = "Управляемое")]
-        public bool Managed { get; set; }
+        public int Managed { get; set; }
 
         [Display(Name = "Консольный порт")]
-        public bool Console { get; set; }
+        public int Console { get; set; }
 
         [Display(Name = "Поддержка PoE")]
-        public bool Poe { get; set; }
+        public int Poe { get; set; }
 
         [Display(Name = "Тип оборудования")]
         public string TypeName { get; set; }
@@ -211,13 +211,13 @@ namespace Kursovaya.Models
         public string InstallationTypeFilter { get; set; }
 
         [Display(Name = "Управляемое")]
-        public bool? ManagedFilter { get; set; }
+        public int? ManagedFilter { get; set; }
 
         [Display(Name = "Консольный порт")]
-        public bool? ConsolePortFilter { get; set; }
+        public int? ConsolePortFilter { get; set; }
 
         [Display(Name = "Поддержка PoE")]
-        public bool? PoeSupportFilter { get; set; }
+        public int? PoeSupportFilter { get; set; }
 
         [Display(Name = "Порты")]
         public string PortFilter { get; set; }
