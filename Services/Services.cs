@@ -90,7 +90,6 @@ namespace Kursovaya.Services
         public Task<Node> GetByIdAsync(int id) 
             => _repo.GetByIdAsync(id);
 
-        // переписать без Task
         public async Task<int> CreateAsync(Node node)
         {
             if (node == null)

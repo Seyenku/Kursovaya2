@@ -5,53 +5,6 @@ using System.Web.Mvc;
 
 namespace Kursovaya.Models
 {
-    public class NodeViewModel
-    {
-        public int Id { get; set; }
-
-        [Required(ErrorMessage = "Название узла обязательно")]
-        [Display(Name = "Название узла")]
-        public string Name { get; set; }
-
-        [Required(ErrorMessage = "Выберите здание")]
-        [Display(Name = "Здание")]
-        public int Building { get; set; }
-
-        [Required(ErrorMessage = "Выберите тип узла")]
-        [Display(Name = "Тип узла")]
-        public int Type { get; set; }
-
-        [Display(Name = "Дополнительная информация")]
-        public string Other { get; set; }
-
-        [Display(Name = "Дата поверки")]
-        [DataType(DataType.Date)]
-        public DateTime? VerificationDate { get; set; }
-
-        [Display(Name = "Здание")]
-        public string BuildingName { get; set; }
-
-        [Display(Name = "Тип узла")]
-        public string TypeName { get; set; }
-
-        [Display(Name = "Количество устройств")]
-        public int DeviceCount { get; set; }
-
-        public IEnumerable<SelectListItem> Buildings { get; set; }
-        public IEnumerable<SelectListItem> NodeTypes { get; set; }
-    }
-
-    public class NodesListViewModel
-    {
-        public List<NodeViewModel> Nodes { get; set; }
-        public NodeFilterViewModel Filter { get; set; }
-        public string TreeDataJson { get; set; }
-
-        public int CurrentPage { get; set; }
-        public int TotalPages { get; set; }
-        public int PageSize { get; set; }
-        public int TotalItems { get; set; }
-    }
 
     public class NodeFilterViewModel
     {
@@ -220,15 +173,5 @@ namespace Kursovaya.Models
         public IEnumerable<SelectListItem> Manufacturers { get; set; }
         public IEnumerable<SelectListItem> EquipmentTypes { get; set; }
         public IEnumerable<SelectListItem> InstallationTypes { get; set; }
-    }
-
-    public class TreeNodeViewModel
-    {
-        public string Id { get; set; }
-        public string Text { get; set; }
-        public string Icon { get; set; }
-        public object State { get; set; }
-        public object Data { get; set; }
-        public List<TreeNodeViewModel> Children { get; set; }
     }
 }

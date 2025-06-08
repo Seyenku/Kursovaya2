@@ -171,6 +171,7 @@ h1 {
     background: #ffffff;
     color: #1f2937;
     font-size: 13px;
+    max-height: 900px;
 }
 
     .table th {

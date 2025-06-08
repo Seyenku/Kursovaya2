@@ -1,5 +1,5 @@
-const CN_Grid = ((util, api, filters) => {
-    let $tbody;
+const CN_Grid = ((util, api, filters, grouping) => {
+    let $tbody, currentData = [];
 
     const createSelect = (options, selectedValue) => {
         const optionsHtml = Object.entries(options)
@@ -10,10 +10,9 @@ const CN_Grid = ((util, api, filters) => {
         return `<select class="form-control form-control-sm">${optionsHtml}</select>`;
     };
 
-    const createRow = node => `
+    const createDataRow = node => `
         <tr class="data-row" data-id="${node.id}" data-building="${node.building}"
-            data-name="${node.name}"
-            data-type="${node.type}" data-other="${node.other || ''}"
+            data-name="${node.name}" data-type="${node.type}" data-other="${node.other || ''}"
             data-date="${node.verificationDate || ''}" data-count="${node.deviceCount || 0}">
             <td>${node.buildingName}</td>
             <td>${node.name}</td>
@@ -27,8 +26,52 @@ const CN_Grid = ((util, api, filters) => {
             </td>
         </tr>`;
 
-    const renderRows = nodes => {
-        $tbody.html(nodes.filter(node => node.id).map(createRow).join(''));
+    const createGroupHeader = (groupKey, count) => {
+        const isCollapsed = grouping.isGroupCollapsed(groupKey);
+        const icon = isCollapsed ? 'fa-folder' : 'fa-folder-open';
+        const chevron = isCollapsed ? 'fa-chevron-right' : 'fa-chevron-down';
+
+        return `
+            <tr class="group-header bg-light" data-group="${groupKey}" style="cursor: pointer;">
+                <td colspan="7" class="font-weight-bold text-muted">
+                    <i class="fa ${chevron} mr-2"></i>
+                    <i class="fa ${icon} mr-2"></i>
+                    ${groupKey} (${count} записей)
+                </td>
+            </tr>`;
+    };
+
+    const renderUngrouped = nodes => {
+        $tbody.html(nodes.filter(node => node.id).map(createDataRow).join(''));
+    };
+
+    const renderGrouped = groupedData => {
+        const html = Object.entries(groupedData)
+            .sort(([a], [b]) => a.localeCompare(b))
+            .map(([groupKey, nodes]) => {
+                const isCollapsed = grouping.isGroupCollapsed(groupKey);
+                const groupRows = nodes.filter(node => node.id).map(createDataRow).join('');
+                const visibilityClass = isCollapsed ? ' style="display: none;"' : '';
+
+                return createGroupHeader(groupKey, nodes.length) +
+                    groupRows.split('</tr>').slice(0, -1).map(row =>
+                        row + '</tr>').map(row =>
+                            row.replace('<tr class="data-row"', `<tr class="data-row group-item" data-group="${groupKey}"${visibilityClass}`)
+                        ).join('');
+            })
+            .join('');
+        $tbody.html(html);
+    };
+
+    const render = nodes => {
+        currentData = nodes;
+        const grouped = grouping.groupData(nodes);
+
+        if (grouping.hasActiveGroups()) {
+            renderGrouped(grouped);
+        } else {
+            renderUngrouped(grouped.ungrouped || nodes);
+        }
     };
 
     const editRow = row => {
@@ -80,6 +123,10 @@ const CN_Grid = ((util, api, filters) => {
                 if (confirm('Удалить узел?')) {
                     api.deleteNode(id).done(() => CN_App.refresh());
                 }
+            })
+            .on('click', `#${gridId} .group-header`, function () {
+                const groupKey = $(this).data('group');
+                grouping.toggleGroup(groupKey);
             });
     };
 
@@ -87,7 +134,8 @@ const CN_Grid = ((util, api, filters) => {
         init: gridId => {
             $tbody = $(`#${gridId} tbody`);
             bindEvents(gridId);
+            grouping.init(() => render(currentData));
         },
-        render: renderRows
+        render
     };
-})(CN_Util, CN_Api, CN_Filters);
+})(CN_Util, CN_Api, CN_Filters, CN_Grouping);

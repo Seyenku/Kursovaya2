@@ -373,6 +373,7 @@
     <Content Include="Scripts\custom\app.js" />
     <Content Include="Scripts\custom\filters.js" />
     <Content Include="Scripts\custom\grid.js" />
+    <Content Include="Scripts\custom\grouping.js" />
     <Content Include="Scripts\custom\modal.js" />
     <Content Include="Scripts\custom\pager.js" />
     <Content Include="Scripts\custom\tree.js" />

@@ -2,12 +2,28 @@ const CN_Filters = ((util, api) => {
     let config = {};
     const maps = { buildings: {}, types: {} };
 
-    const fillSelect = (selector, dataMap) => {
+    const initSelect2 = (selector, dataMap, placeholder) => {
         const $select = $(selector);
-        $select.empty().append('<option value="0">Показать всё</option>');
-        Object.entries(dataMap).forEach(([id, name]) =>
-            $select.append(`<option value="${id}">${name}</option>`)
-        );
+        $select.empty();
+
+        $select.select2({
+            data: [
+                { id: '0', text: 'Показать всё' },
+                ...Object.entries(dataMap).map(([id, name]) => ({ id, text: name }))
+            ],
+            placeholder: placeholder || 'Выберите значение',
+            allowClear: true,
+            width: '100%',
+            templateResult: (data) => {
+                if (data.id === '0') {
+                    return $('<span>').addClass('text-muted').text(data.text);
+                }
+                return data.text;
+            }
+        });
+
+        // Устанавливаем значение по умолчанию
+        $select.val('0').trigger('change');
     };
 
     const getFilterValues = () => ({
@@ -30,13 +46,16 @@ const CN_Filters = ((util, api) => {
             const $element = $('#' + elementId);
             if ($element.length === 0) return;
 
-            $element.on('change', callback);
-
-            if ($element.attr('type') === 'text' || $element.is('input[type="text"]')) {
+            // Для Select2 элементов используем специальные события
+            if ($element.hasClass('select2-hidden-accessible') || filterName === 'building' || filterName === 'type') {
+                $element.on('select2:select select2:unselect select2:clear change', callback);
+            } else if ($element.attr('type') === 'text' || $element.is('input[type="text"]')) {
                 $element.on('keyup', function () {
                     clearTimeout(this.timer);
                     this.timer = setTimeout(callback, 300);
                 });
+            } else {
+                $element.on('change', callback);
             }
         });
 
@@ -46,11 +65,11 @@ const CN_Filters = ((util, api) => {
     const loadData = () => $.when(
         api.buildings().done(data => {
             data.forEach(item => maps.buildings[item.id] = item.name);
-            fillSelect('#' + config.building, maps.buildings);
+            initSelect2('#' + config.building, maps.buildings, 'Выберите корпус');
         }),
         api.nodeTypes().done(data => {
             data.forEach(item => maps.types[item.id] = item.name);
-            fillSelect('#' + config.type, maps.types);
+            initSelect2('#' + config.type, maps.types, 'Выберите тип узла');
         })
     );
 

@@ -111,7 +111,7 @@
                                 <th>Доп.</th>
                                 <th>Дата</th>
                                 <th>Кол-во</th>
-                                <th></th> <!-- Наавание не нужно -->
+                                <th></th> <!-- Назавание не нужно -->
                             </tr>
                         </thead>
                         <tbody><!-- Содержимое таблицы будет заполнено JavaScript --></tbody>
@@ -149,6 +149,7 @@
                         <input type="text" id="FilterDeviceCnt" class="form-control" placeholder="Точное количество">
                     </div>
                     <div class="form-group">
+                        <label for="FilterPeriod" class="form-label">Период:</label>
                         <select id="FilterPeriod" class="form-control" multiple></select>
                     </div>
                 </div>
@@ -219,6 +220,7 @@
 <!-- Модули custom -->
 <script src="../../Scripts/custom/util.js"></script>
 <script src="../../Scripts/custom/api.js"></script>
+<script src="../../Scripts/custom/grouping.js"></script>
 <script src="../../Scripts/custom/tree.js"></script>
 <script src="../../Scripts/custom/filters.js"></script>
 <script src="../../Scripts/custom/grid.js"></script>
