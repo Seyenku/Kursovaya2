@@ -15,30 +15,32 @@ const CN_Filters = ((util, api) => {
         NodeNameFilter: getValue('name'),
         TypeFilter: getValue('type'),
         DeviceCount: getValue('device'),
-        DateFrom: getValue('dateFrom'),
-        DateTo: getValue('dateTo')
+        Periods: $('#FilterPeriod').val() || []
     });
 
     const getValue = key => {
-        const element = util.$(config[key]);
+        const element = document.getElementById(config[key]);
         if (!element) return null;
-        const value = element.value.trim();
+        const value = (element.value || '').toString().trim();
         return value === '0' || !value ? null : value;
     };
 
     const bindEvents = callback => {
-        Object.values(config).forEach(id => {
-            const element = util.$(id);
-            if (!element) return;
+        Object.entries(config).forEach(([filterName, elementId]) => {
+            const $element = $('#' + elementId);
+            if ($element.length === 0) return;
 
-            element.addEventListener('change', callback);
-            if (element.type === 'text') {
-                element.addEventListener('keyup', function () {
+            $element.on('change', callback);
+
+            if ($element.attr('type') === 'text' || $element.is('input[type="text"]')) {
+                $element.on('keyup', function () {
                     clearTimeout(this.timer);
                     this.timer = setTimeout(callback, 300);
                 });
             }
         });
+
+        $('#FilterPeriod').on('select2:select select2:unselect select2:clear change', callback);
     };
 
     const loadData = () => $.when(
@@ -52,11 +54,43 @@ const CN_Filters = ((util, api) => {
         })
     );
 
+    const buildMonths = () => {
+        const res = [], now = new Date();
+        for (let y = 2010; y <= now.getFullYear(); y++) {
+            for (let m = 1; m <= 12; m++) {
+                const mm = m.toString().padStart(2, '0');
+                res.push(`${mm}.${y}`);
+            }
+        }
+        return res;
+    };
+
+    const loadFilterPeriod = () => {
+        $('#FilterPeriod').select2({
+            data: buildMonths().map(m => ({ id: m, text: m })),
+            tags: true,
+            tokenSeparators: [',', ' '],
+            placeholder: 'Выберите месяц(ы)',
+            width: '100%',
+            createTag: params => {
+                const re = /^(0[1-9]|1[0-2])\.\d{4}$/;
+                return re.test(params.term)
+                    ? { id: params.term, text: params.term, newOption: true }
+                    : null;
+            },
+            templateResult: data => data.newOption
+                ? $('<span>').text(`${data.text} *`)
+                : data.text
+        });
+    };
+
     return {
         init: (filterConfig, callback) => {
             config = filterConfig;
-            bindEvents(callback);
-            return loadData();
+            return loadData().then(() => {
+                loadFilterPeriod();
+                bindEvents(callback);
+            });
         },
         getValues: getFilterValues,
         getBuildingName: id => maps.buildings[id],

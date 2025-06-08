@@ -22,8 +22,8 @@ const CN_Grid = ((util, api, filters) => {
             <td>${node.verificationDate || ''}</td>
             <td>${node.deviceCount}</td>
             <td>
-                <button class="btn btn-sm btn-primary btn-edit">Изменить</button>
-                <button class="btn btn-sm btn-danger btn-delete">Удалить</button>
+                <button class="btn btn-sm btn-primary btn-edit"><i class="fa fa-edit"></i></button>
+                <button class="btn btn-sm btn-danger btn-delete"><i class="fa fa-trash"></i></button>
             </td>
         </tr>`;
 
@@ -44,8 +44,8 @@ const CN_Grid = ((util, api, filters) => {
             .end().eq(4).html(`<input type="date" class="form-control form-control-sm" value="${data.date || ''}">`)
             .end().eq(5).html(`<input type="number" min="0" class="form-control form-control-sm" value="${data.count || 0}">`)
             .end().eq(6).html(`
-                <button class="btn btn-sm btn-success btn-save">Сохранить</button>
-                <button class="btn btn-sm btn-secondary btn-cancel">Отмена</button>
+                <button class="btn btn-sm btn-success btn-save"><i class="fa-solid fa-floppy-disk"></i></button>
+                <button class="btn btn-sm btn-secondary btn-cancel"><i class="fa-solid fa-rectangle-xmark"></i></button>
             `);
     };
 

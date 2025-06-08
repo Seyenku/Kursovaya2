@@ -78,6 +78,17 @@ const CN_Modal = ((util, api, filters) => {
         });
 
         $modal.on('hidden.bs.modal', clearForm);
+
+        // Дополнительные обработчики для кнопок закрытия
+        $modal.find('[data-dismiss="modal"]').on('click', () => {
+            $modal.modal('hide');
+        });
+
+        $modal.on('click', function (e) {
+            if (e.target === this) {
+                $modal.modal('hide');
+            }
+        });
     };
 
     return {

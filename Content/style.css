@@ -1,5 +1,4 @@
-﻿/* Reset and Base Styles */
-* {
+﻿* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -16,57 +15,8 @@ body {
 /* Layout Components */
 .container-fluid {
     padding: 24px;
-    max-width: 1400px;
+    max-width: 95%;
     margin: 0 auto;
-}
-
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.col-12, .col-lg-4, .col-lg-8, .col-md-2, .col-md-3, .col-md-6, .col-md-12 {
-    flex: 1;
-    min-width: 0;
-}
-
-@media (min-width: 768px) {
-    .col-md-2 {
-        flex: 0 0 calc(16.666667% - 16px);
-    }
-
-    .col-md-3 {
-        flex: 0 0 calc(25% - 15px);
-    }
-
-    .col-md-6 {
-        flex: 0 0 calc(50% - 10px);
-    }
-
-    .col-md-12 {
-        flex: 0 0 100%;
-    }
-}
-
-@media (min-width: 992px) {
-    .col-lg-4 {
-        flex: 0 0 calc(33.333333% - 14px);
-    }
-
-    .col-lg-8 {
-        flex: 0 0 calc(66.666667% - 7px);
-    }
-}
-
-@media (min-width: 1200px) {
-    .col-lg-4 {
-        flex: 0 0 300px;
-    }
-
-    .col-lg-8 {
-        flex: 1;
-    }
 }
 
 /* Card Components */
@@ -77,6 +27,7 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: box-shadow 0.2s ease;
+    margin-bottom: 1.5rem;
 }
 
     .card:hover {
@@ -100,10 +51,6 @@ body {
     padding: 20px;
 }
 
-.mb-3 {
-    margin-bottom: 1rem;
-}
-
 /* Typography */
 h1 {
     color: #1e293b;
@@ -112,11 +59,6 @@ h1 {
     margin-bottom: 32px;
     text-align: center;
     letter-spacing: -0.025em;
-}
-
-h3 {
-    color: #1e293b;
-    font-weight: 600;
 }
 
 /* Form Components */
@@ -153,11 +95,6 @@ h3 {
         border-color: #9ca3af;
     }
 
-.form-control-sm {
-    padding: 6px 8px;
-    font-size: 13px;
-}
-
 /* Button Components */
 .btn {
     display: inline-flex;
@@ -175,16 +112,6 @@ h3 {
     gap: 6px;
 }
 
-.btn-primary {
-    background: #3b82f6;
-    color: white;
-}
-
-    .btn-primary:hover {
-        background: #2563eb;
-        transform: translateY(-1px);
-    }
-
 .btn-success {
     background: #10b981;
     color: white;
@@ -195,16 +122,6 @@ h3 {
         transform: translateY(-1px);
     }
 
-.btn-danger {
-    background: #ef4444;
-    color: white;
-}
-
-    .btn-danger:hover {
-        background: #dc2626;
-        transform: translateY(-1px);
-    }
-
 .btn-secondary {
     background: #6b7280;
     color: white;
@@ -212,7 +129,15 @@ h3 {
 
     .btn-secondary:hover {
         background: #4b5563;
-        transform: translateY(-1px);
+    }
+
+.btn-danger {
+    background: #ef4444;
+    color: white;
+}
+
+    .btn-danger:hover {
+        background: #dc2626;
     }
 
 .btn-sm {
@@ -220,15 +145,24 @@ h3 {
     font-size: 12px;
 }
 
-.btn-group {
+.btn-link {
+    background: none;
+    border: none;
+    color: #374151;
+    text-decoration: none;
+    padding: 0;
+    cursor: pointer;
     display: flex;
-    gap: 8px;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    font-weight: 600;
+    font-size: 16px;
 }
 
-.btn-group-sm .btn {
-    padding: 4px 8px;
-    font-size: 11px;
-}
+    .btn-link:hover {
+        color: #1f2937;
+    }
 
 /* Table Components */
 .table {
@@ -249,6 +183,10 @@ h3 {
         font-size: 12px;
         text-transform: uppercase;
         letter-spacing: 0.05em;
+        min-width: 120px;
+        max-width: 200px;
+        word-wrap: break-word;
+        vertical-align: top;
     }
 
     .table td {
@@ -271,16 +209,71 @@ h3 {
     background-color: #f9fafb;
 }
 
-/* Checkbox Styles */
-.group-checkbox {
-    margin-right: 8px;
+/* Column width distribution */
+.table th:nth-child(1), .table td:nth-child(1) {
+    width: 13%;
+    min-width: 80px;
 }
 
-input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    accent-color: #3b82f6;
-    margin-right: 8px;
+.table th:nth-child(2), .table td:nth-child(2) {
+    width: 14%;
+    min-width: 80px;
+}
+
+.table th:nth-child(3), .table td:nth-child(3) {
+    width: 13%;
+    min-width: 100px;
+}
+
+.table th:nth-child(4), .table td:nth-child(4) {
+    width: 35%;
+    min-width: 150px;
+}
+
+.table th:nth-child(5), .table td:nth-child(5) {
+    width: 15%;
+    min-width: 90px;
+}
+
+.table th:nth-child(6), .table td:nth-child(6) {
+    width: 5%;
+    min-width: 40px;
+}
+
+.table th:nth-child(7), .table td:nth-child(7) {
+    width: 5%;
+    min-width: 80px;
+}
+
+/* Editing row specific styles */
+tr.editing td {
+    padding: 4px;
+    vertical-align: top;
+}
+
+tr.editing .form-control {
+    width: 100%;
+    min-width: 40px;
+    font-size: 12px;
+    padding: 6px 8px;
+    line-height: 1.2;
+    height: auto;
+    min-height: 28px;
+}
+
+tr.editing textarea.form-control {
+    min-height: 60px;
+    resize: vertical;
+}
+
+tr.editing select.form-control {
+    height: 28px;
+    padding: 2px 6px;
+}
+
+tr.editing input[type="date"].form-control,
+tr.editing input[type="number"].form-control {
+    height: 28px;
 }
 
 /* Tree Container */
@@ -314,54 +307,6 @@ input[type="checkbox"] {
         display: block;
     }
 
-.btn-link {
-    background: none;
-    border: none;
-    color: #374151;
-    text-decoration: none;
-    padding: 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    text-align: left;
-    font-weight: 600;
-}
-
-    .btn-link:hover {
-        color: #1f2937;
-    }
-
-.btn-link {
-    font-size: 18px;
-}
-
-.fa {
-    font-family: FontAwesome;
-}
-
-.fa-chevron-down::before {
-    content: "▼";
-    font-size: 10px;
-}
-
-.fa-chevron-right::before {
-    content: "▶";
-    font-size: 10px;
-}
-
-.fa-plus::before {
-    content: "+";
-}
-
-.mr-1 {
-    margin-right: 4px;
-}
-
-.mr-2 {
-    margin-right: 8px;
-}
-
 /* Modal Components */
 .modal {
     display: none;
@@ -375,7 +320,7 @@ input[type="checkbox"] {
     backdrop-filter: blur(4px);
 }
 
-    .modal.fade.show {
+    .modal.show {
         display: block;
     }
 
@@ -447,43 +392,23 @@ input[type="checkbox"] {
         color: #374151;
     }
 
-/* Group Headers */
-.group-header {
-    background: #f1f5f9 !important;
-    font-weight: 600;
-    color: #475569;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+/* Checkbox Styles */
+.form-check {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
 }
 
-    .group-header:hover {
-        background: #e2e8f0 !important;
-    }
-
-    .group-header td {
-        padding: 16px 12px;
-        border-bottom: 2px solid #cbd5e1;
-    }
-
-.group-icon {
+.form-check-input {
+    width: 16px;
+    height: 16px;
     margin-right: 8px;
-    color: #64748b;
+    accent-color: #3b82f6;
 }
 
-.fa-plus-circle::before {
-    content: "⊕";
-    font-size: 14px;
-}
-
-.fa-minus-circle::before {
-    content: "⊖";
-    font-size: 14px;
-}
-
-/* Highlighted Row */
-.highlighted-row {
-    background: #fef3c7 !important;
-    border-left: 4px solid #f59e0b;
+.form-check-label {
+    margin-bottom: 0;
+    cursor: pointer;
 }
 
 /* Utility Classes */
@@ -503,10 +428,6 @@ input[type="checkbox"] {
     text-align: left;
 }
 
-.text-decoration-none {
-    text-decoration: none;
-}
-
 .w-100 {
     width: 100%;
 }
@@ -519,17 +440,50 @@ input[type="checkbox"] {
     margin-bottom: 0;
 }
 
-/* Responsive Design */
-@media (max-width: 991px) {
-    .col-lg-4, .col-lg-8 {
-        flex: 0 0 100%;
-        margin-bottom: 20px;
-    }
+.mb-3 {
+    margin-bottom: 1rem;
+}
 
+.mr-1 {
+    margin-right: 4px;
+}
+
+.mr-2 {
+    margin-right: 8px;
+}
+
+/* Font Awesome Icons */
+.fa-chevron-right::before {
+    content: "▶";
+    font-size: 10px;
+}
+
+.fa-chevron-down::before {
+    content: "▼";
+    font-size: 10px;
+}
+
+.fa-plus::before {
+    content: "+";
+}
+
+.fa-edit::before {
+    content: "✎";
+}
+
+.fa-trash::before {
+    content: "🗑";
+}
+
+/* Responsive */
+@media (max-width: 1199px) {
     .container-fluid {
         padding: 16px;
+        max-width: 96%;
     }
+}
 
+@media (max-width: 991px) {
     h1 {
         font-size: 28px;
     }
@@ -540,24 +494,9 @@ input[type="checkbox"] {
 }
 
 @media (max-width: 767px) {
-    .col-md-2, .col-md-3, .col-md-6 {
-        flex: 0 0 100%;
-        margin-bottom: 12px;
+    .container-fluid {
+        max-width: 98%;
     }
-
-    .btn-group {
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    .table {
-        font-size: 12px;
-    }
-
-        .table th,
-        .table td {
-            padding: 8px 6px;
-        }
 
     .modal-dialog {
         margin: 16px;
@@ -568,38 +507,45 @@ input[type="checkbox"] {
         padding: 20px;
     }
 
-    .row {
-        gap: 12px;
+    .table {
+        font-size: 12px;
+    }
+
+        .table th,
+        .table td {
+            padding: 8px 6px;
+        }
+}
+
+@media (min-width: 992px) {
+    .col-lg-8 {
+        flex: 0 0 80%;
+        max-width: 80%;
+    }
+
+    .col-lg-4 {
+        flex: 0 0 20%;
+        max-width: 20%;
     }
 }
 
-/* Focus States */
-button:focus-visible,
-.btn:focus-visible {
-    outline: 2px solid #3b82f6;
-    outline-offset: 2px;
+tr.editing .btn {
+    font-size: 11px;
+    padding: 4px 8px;
+    margin: 1px;
 }
 
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-    outline: 2px solid #3b82f6;
-    outline-offset: 2px;
+/* Table container scrolling */
+.card.table {
+    overflow-x: auto;
 }
 
-/* Print Styles */
-@media print {
-    .btn, .modal, .card-header {
-        display: none;
+    .card.table .card-body {
+        padding: 0;
+        overflow-x: auto;
     }
 
-    .card {
-        box-shadow: none;
-        border: 1px solid #000;
-    }
-
-    body {
-        background: white;
-        color: black;
-    }
+#GridCommunication {
+    min-width: 800px;
+    table-layout: fixed;
 }

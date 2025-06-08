@@ -24,9 +24,13 @@ namespace Kursovaya.Services
             _repo = repo ?? throw new ArgumentNullException(nameof(repo));
         }
 
-        public async Task<PagedResult<Node>> GetNodesAsync(NodeFilterViewModel f, int page, int size)
+        public async Task<PagedResult<Node>> GetNodesAsync(
+        NodeFilterViewModel f, int page, int size)
         {
-            var q = _repo.Query().Include(n => n.Equipment);
+            var q = _repo.Query()
+                .Include(n => n.Equipment)
+                .Include(n => n.BuildingInfo)
+                .Include(n => n.NodeType);
 
             if (f != null)
             {
@@ -39,11 +43,37 @@ namespace Kursovaya.Services
                 if (!string.IsNullOrWhiteSpace(f.NodeNameFilter))
                     q = q.Where(n => n.Name.Contains(f.NodeNameFilter));
 
-                if (f.DeviceCountFilter.HasValue)
-                    q = q.Where(n => n.Equipment.Count == f.DeviceCountFilter);
+                if (f.DeviceCount.HasValue)
+                    q = q.Where(n => n.Equipment.Count == f.DeviceCount.Value);
+
+                var wanted = new List<int>();
+
+                if (f.Periods != null)
+                {
+                    foreach (var s in f.Periods)
+                    {
+                        var p = s?.Split('.');
+                        if (p?.Length == 2 &&
+                            int.TryParse(p[0], out var mm) &&
+                            int.TryParse(p[1], out var yy) &&
+                            mm >= 1 && mm <= 12)
+                        {
+                            wanted.Add(yy * 100 + mm);
+                        }
+                    }
+                }
+
+                if (wanted.Count > 0)
+                {
+                    q = q.Where(n => n.VerificationDate.HasValue &&
+                                     wanted.Contains(
+                                         n.VerificationDate.Value.Year * 100 +
+                                         n.VerificationDate.Value.Month));
+                }
             }
 
             var total = await q.CountAsync().ConfigureAwait(false);
+
             var items = await q.OrderBy(n => n.Id)
                                .Skip((page - 1) * size)
                                .Take(size)
@@ -52,6 +82,7 @@ namespace Kursovaya.Services
 
             return new PagedResult<Node>(items, total);
         }
+
 
         public async Task<IReadOnlyList<Node>> GetAllAsync()
             => (await _repo.GetAllAsync().ConfigureAwait(false)).AsReadOnly();

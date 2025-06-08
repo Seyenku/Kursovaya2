@@ -1,5 +1,11 @@
 const CN_Api = (util => {
     const get = (url, params) => $.getJSON(url + (params ? '?' + util.encode(params) : ''));
+    const post = (url, data) => util.ajax({
+        url,
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json'
+    });
     const put = (url, data) => util.ajax({
         url,
         type: 'PUT',

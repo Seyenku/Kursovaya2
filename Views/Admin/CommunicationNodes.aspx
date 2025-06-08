@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>Коммуникационные узлы</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
     <link rel="stylesheet" href="/Content/jstree/style.min.css">
     <link rel="stylesheet" href="/Content/style.css">
 </head>
@@ -17,7 +18,7 @@
         </div>
     </div>
 
-    <!-- 1. Древовидная структура -->
+    <!-- Древовидная структура -->
     <div class="row">
         <div class="col-12">
             <div class="card mb-3">
@@ -44,7 +45,7 @@
         </div>
     </div>
 
-    <!-- 2. Панель группировки -->
+    <!-- Панель группировки -->
     <div class="row">
         <div class="col-12">
             <div class="card mb-3">
@@ -110,13 +111,14 @@
                                 <th>Доп.</th>
                                 <th>Дата</th>
                                 <th>Кол-во</th>
-                                <th>Действия</th>
+                                <th></th> <!-- Наавание не нужно -->
                             </tr>
                         </thead>
                         <tbody><!-- Содержимое таблицы будет заполнено JavaScript --></tbody>
                     </table>
                 </div>
             </div>
+            <div id="pager" class="mt-2"></div>
         </div>
 
         <!-- Фильтры -->
@@ -147,12 +149,7 @@
                         <input type="text" id="FilterDeviceCnt" class="form-control" placeholder="Точное количество">
                     </div>
                     <div class="form-group">
-                        <label for="FilterDateFrom" class="form-label">Дата проверки от:</label>
-                        <input type="date" id="FilterDateFrom" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="FilterDateTo" class="form-label">Дата проверки до:</label>
-                        <input type="date" id="FilterDateTo" class="form-control">
+                        <select id="FilterPeriod" class="form-control" multiple></select>
                     </div>
                 </div>
             </div>
@@ -166,7 +163,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Добавить коммуникационный узел</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -226,6 +223,7 @@
 <script src="../../Scripts/custom/filters.js"></script>
 <script src="../../Scripts/custom/grid.js"></script>
 <script src="../../Scripts/custom/modal.js"></script>
+<script src="../../Scripts/custom/pager.js"></script>
 <script src="../../Scripts/custom/app.js"></script>
 
 <script>
@@ -239,6 +237,6 @@
         });
     });
 </script>
-
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.full.min.js"></script>
 </body>
 </html>

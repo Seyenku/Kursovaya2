@@ -369,12 +369,12 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
-    <Content Include="Scripts\custom.js" />
     <Content Include="Scripts\custom\api.js" />
     <Content Include="Scripts\custom\app.js" />
     <Content Include="Scripts\custom\filters.js" />
     <Content Include="Scripts\custom\grid.js" />
     <Content Include="Scripts\custom\modal.js" />
+    <Content Include="Scripts\custom\pager.js" />
     <Content Include="Scripts\custom\tree.js" />
     <Content Include="Scripts\custom\util.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />

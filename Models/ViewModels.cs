@@ -65,15 +65,10 @@ namespace Kursovaya.Models
         public string NodeNameFilter { get; set; }
 
         [Display(Name = "Количество устройств")]
-        public int? DeviceCountFilter { get; set; }
+        public int? DeviceCount { get; set; }
 
-        [Display(Name = "Дата с")]
-        [DataType(DataType.Date)]
-        public DateTime? DateFromFilter { get; set; }
-
-        [Display(Name = "Дата по")]
-        [DataType(DataType.Date)]
-        public DateTime? DateToFilter { get; set; }
+        [Display(Name = "Периоды")]
+        public IList<string> Periods { get; set; } = new List<string>();
 
         public IEnumerable<SelectListItem> Buildings { get; set; }
         public IEnumerable<SelectListItem> NodeTypes { get; set; }

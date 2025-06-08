@@ -12,21 +12,27 @@ public class NodesApiController : ApiController
     public NodesApiController(INodeService svc) { _svc = svc; }
 
     [HttpGet, Route("")]
-    public async Task<IHttpActionResult> GetFiltered([FromUri] NodeFilterViewModel f)
+    public async Task<IHttpActionResult> GetFiltered(
+        [FromUri] NodeFilterViewModel f,
+        int page = 1,
+        int size = 20)
     {
-        var page = await _svc.GetNodesAsync(f, 1, 1000);
-        return Ok(page.Items.Select(n => new
+        var result = await _svc.GetNodesAsync(f, page, size);
+
+        var items = result.Items.Select(n => new
         {
             id = n.Id,
             name = n.Name,
             building = n.Building,
-            buildname = n.BuildingInfo?.BuildName,
+            buildingName = n.BuildingInfo?.BuildName,
             type = n.Type,
             typeName = n.NodeType?.Name,
             verificationDate = n.VerificationDate?.ToString("yyyy-MM-dd"),
             deviceCount = n.Equipment?.Count ?? 0,
             other = n.Other
-        }));
+        });
+
+        return Ok(new { items, total = result.TotalCount });
     }
 
     [HttpGet, Route("tree")]
