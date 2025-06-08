@@ -32,7 +32,7 @@ public class NodesApiController : ApiController
     [HttpGet, Route("tree")]
     public async Task<IHttpActionResult> GetTree()
     {
-        var all = await _svc.GetAllAsync();
+        var all = await _svc.GetAllAsync().ConfigureAwait(false);
         var tree = all.GroupBy(n => n.Building)
                       .Select(g => new
                       {
@@ -60,6 +60,23 @@ public class NodesApiController : ApiController
         public DateTime? VerificationDate { get; set; }
     }
 
+    [HttpPost, Route("")]
+    public async Task<IHttpActionResult> Create([FromBody] NodeUpdateDto dto)
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        var node = new Node
+        {
+            Name = dto.Name,
+            Building = dto.BuildingId,
+            Type = dto.TypeId,
+            Other = dto.Other,
+            VerificationDate = dto.VerificationDate
+        };
+
+        var id = await _svc.CreateAsync(node).ConfigureAwait(false);
+        return Ok(new { id });
+    }
 
     [HttpPut, Route("{id:int}")]
     public async Task<IHttpActionResult> Update(int id, [FromBody] NodeUpdateDto dto)

@@ -212,8 +212,10 @@ var custom = (function () {
 
             body.push(
                 '<tr class="data-row"' +
+                ' data-build="' + (r.buildingId || '') + '"' +
                 ' data-buildname="' + (r.buildname || '') + '"' +
                 ' data-name="' + (r.name || '') + '"' +
+                ' data-type="' + (r.typeId || '') + '"' +
                 ' data-typee="' + (r.typeName || '') + '"' +
                 ' data-other="' + (r.other || '') + '"' +
                 ' data-verification_date="' + (r.verificationDate || '') + '"' +
@@ -334,11 +336,11 @@ var custom = (function () {
         };
 
         // data‑column в чекбоксы
-        var groupBuildingEl = $id(IDs.chkIds.col1);
-        var groupNameEl = $id(IDs.chkIds.col2);
-        var groupTypeEl = $id(IDs.chkIds.col3);
-        var groupDateEl = $id(IDs.chkIds.col4);
-        var groupDevicesEl = $id(IDs.chkIds.col5);
+        var groupBuildingEl = $id(IDs.chkIds.building);
+        var groupNameEl = $id(IDs.chkIds.name);
+        var groupTypeEl = $id(IDs.chkIds.type);
+        var groupDateEl = $id(IDs.chkIds.date);
+        var groupDevicesEl = $id(IDs.chkIds.devices);
 
         if (groupBuildingEl) $(groupBuildingEl).attr('data-column', 'buildname');
         if (groupNameEl) $(groupNameEl).attr('data-column', 'name');

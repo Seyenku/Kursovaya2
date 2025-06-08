@@ -56,27 +56,26 @@ namespace Kursovaya.Services
         public async Task<IReadOnlyList<Node>> GetAllAsync()
             => (await _repo.GetAllAsync().ConfigureAwait(false)).AsReadOnly();
 
-        public Task<Node> GetByIdAsync(int id) => _repo.GetByIdAsync(id);
+        public Task<Node> GetByIdAsync(int id) 
+            => _repo.GetByIdAsync(id);
 
         // переписать без Task
         public async Task<int> CreateAsync(Node node)
         {
-            if (node == null) throw new ArgumentNullException(nameof(node));
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
 
-            await Task.Run(() =>
-            {
-                _repo.Add(node);
-                _repo.SaveChangesAsync();
-            });
-
+            _repo.Add(node);
+            await _repo.SaveChangesAsync().ConfigureAwait(false);
             return node.Id;
         }
 
         public async Task UpdateAsync(int id, NodeUpdateDto dto)
         {
-            if (dto == null) throw new ArgumentNullException(nameof(dto));
+            if (dto == null)
+                throw new ArgumentNullException(nameof(dto));
 
-            var node = await _repo.GetByIdAsync(id);
+            var node = await _repo.GetByIdAsync(id).ConfigureAwait(false);
             if (node == null)
                 throw new InvalidOperationException($"Узел с id={id} не найден.");
 
@@ -87,18 +86,20 @@ namespace Kursovaya.Services
             node.VerificationDate = dto.VerificationDate;
 
             _repo.Update(node);
-            await _repo.SaveChangesAsync();
+            await _repo.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(int id)
         {
-            var node = await _repo.GetByIdAsync(id);
-            if (node == null) return;
+            var node = await _repo.GetByIdAsync(id).ConfigureAwait(false);
+            if (node == null)
+                return;
 
             _repo.Remove(node);
-            await _repo.SaveChangesAsync();
+            await _repo.SaveChangesAsync().ConfigureAwait(false);
         }
     }
+
     public sealed class BuildingService : IBuildingService
     {
         private readonly IRepository<Building> _repo;

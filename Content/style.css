@@ -290,6 +290,7 @@ input[type="checkbox"] {
     border-radius: 8px;
     padding: 16px;
     min-height: 300px;
+    max-height: 900px;
     overflow: auto;
     color: #374151;
 }
